@@ -3,7 +3,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Welcome from './pages/Welcome';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import AdminHome from './pages/AdminHome';
+import Home from './pages/Home';
+import Trainers from './pages/Trainers';
+import Members from './pages/Members';
+import Packages from './pages/Packages';
 
 function App() {
   return (
@@ -12,13 +15,16 @@ function App() {
         <Route path="/" element={<Welcome />} />
         <Route path="/auth/signup" element={<Login />} />
         <Route path="/auth/signup" element={<Signup />} />
-        <Route path="/admin/home" element={<AdminHome />} />
-        <Route path="/packages" element={<Packages />} />
-        <Route path="/packages/:id" element={<Package />} />
-        <Route path="/clients" element={<Clients />} />
-        <Route path="/clients/:id" element={<Client />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/trainers" element={<Trainers />} />
-        <Route path="/trainers/:id" element={<Trainer />} />
+        <Route path="/clients" element={<Members />} />
+        <Route path="/packages" element={<Packages />} />
+
+        {/* 
+        <Route path="/packages/:id" element={<Package />} />
+        
+        <Route path="/clients/:id" element={<Client />} />
+        <Route path="/trainers/:id" element={<Trainer />} /> */}
       </Routes>
     </Router>
   );

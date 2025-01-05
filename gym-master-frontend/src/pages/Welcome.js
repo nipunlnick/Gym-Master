@@ -1,13 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import '../assets/logo.png';
 
 const Welcome = () => {
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="text-center">
-                {/* Replace with your actual logo */}
                 <img
-                    src="../assets/logo.png" // Replace with your logo path
+                    src="../assets/logo.png"
                     alt="Gym Logo"
                     className="mx-auto mb-6 w-24 h-24"
                 />
