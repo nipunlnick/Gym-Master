@@ -2,19 +2,19 @@ import React from 'react';
 import Sidebar from '../components/Sidebar';
 import DetailsCard from '../components/DetailsCard';
 
-const members = [
+const clients = [
     { name: "John Doe", package: "Gold", email: "jhondoe@example.com" },
     { name: "Jane Doe", package: "Platinum", email: "janedoe@example.com" },
 ];
 
-const Members = () => {
+const Clients = () => {
     return (
         <div className="flex">
             <Sidebar />
             <div className="flex-1 p-8">
                 <header className="flex justify-between items-center mb-8">
                     <h1 className="text-3xl font-bold">Members</h1>
-                    <p className="text-lg text-gray-400">Total Members: {members.length}</p>
+                    <p className="text-lg text-gray-400">Total Members: {clients.length}</p>
                 </header>
                 <div className="bg-gray-100 p-4 rounded-lg mb-6">
                     <input
@@ -24,12 +24,12 @@ const Members = () => {
                     />
                 </div>
                 <div>
-                    {members.map((member, index) => (
+                    {clients.map((client, index) => (
                         <DetailsCard
                             key={index}
-                            name={member.name}
-                            specialty={member.package}
-                            email={member.email}
+                            name={client.name}
+                            specialty={client.package}
+                            email={client.email}
                         />
                     ))}
                 </div>
@@ -38,4 +38,4 @@ const Members = () => {
     );
 };
 
-export default Members;
+export default Clients;

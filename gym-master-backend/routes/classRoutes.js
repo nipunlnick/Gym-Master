@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { getClasses, createClass } from '../controllers/classController';
-import { verifyToken } from '../middleware/authMiddleware';
+import { getClasses, createClass } from '../controllers/classController.js';
+import { verifyToken } from '../middlewares/authMiddleware.js';
 const router = Router();
 
 router.get('/', getClasses);

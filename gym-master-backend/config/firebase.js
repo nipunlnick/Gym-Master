@@ -1,12 +1,19 @@
-import { initializeApp, credential as _credential, firestore as _firestore, auth as _auth } from 'firebase-admin';
-import serviceAccount from './path/to/firebase-admin-sdk.json'; // path to the downloaded admin SDK key
+import admin from 'firebase-admin';
+import { createRequire } from 'module'; // Needed to use require in ES Modules
 
-initializeApp({
-    credential: _credential.cert(serviceAccount),
-    databaseURL: "https://<your-project-id>.firebaseio.com",
-});
+// Use `createRequire()` to load JSON files in ES Module context
+const require = createRequire(import.meta.url);
+const serviceAccount = require('./firebaseAdminConfig.json');
 
-const firestore = _firestore();
-const auth = _auth();
+// Check if Firebase has already been initialized to prevent duplicate initialization
+if (!admin.apps.length) {
+    admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+        databaseURL: "https://gym-master-ff735.firebaseio.com",  // Ensure this is your actual database URL
+    });
+}
+
+const firestore = admin.firestore();
+const auth = admin.auth();
 
 export default { firestore, auth };

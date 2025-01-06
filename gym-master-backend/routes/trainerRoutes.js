@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { getTrainers, createTrainer } from '../controllers/trainerController';
-import { verifyToken } from '../middleware/authMiddleware';
+import { getTrainers, createTrainer } from '../controllers/trainerController.js';
+import { verifyToken } from '../middlewares/authMiddleware.js';
 const router = Router();
 
 router.get('/', getTrainers);  // Fetch all trainers

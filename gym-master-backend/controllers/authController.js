@@ -1,33 +1,35 @@
-import { auth } from '../firebaseConfig';
+import firebase from '../config/firebase.js';
+
+const { firestore, auth } = firebase;
 
 export async function signup(req, res) {
     const { email, password, displayName } = req.body;
-
     try {
-        const user = await auth.createUser({
+        const userRecord = await auth.createUser({
             email,
             password,
-            displayName,
+            displayName
         });
-        return res.status(201).json(user);
+        // Store user in Firestore
+        await firestore.collection('users').doc(userRecord.uid).set({
+            email,
+            displayName,
+            role: 'member',  // Default role
+        });
+        res.status(201).json({ message: 'User created', userId: userRecord.uid });
     } catch (error) {
-        return res.status(400).json({ error: error.message });
+        res.status(400).json({ error: error.message });
     }
-}
+};
 
 export async function login(req, res) {
     const { email, password } = req.body;
-
     try {
         const user = await auth.getUserByEmail(email);
-        // Simulate authentication (in real life, use Firebase client-side for login)
-        // This is just for demonstration:
-        if (user.email === email && password) {
-            return res.status(200).json({ token: "dummy-token", user });
-        } else {
-            throw new Error('Invalid credentials');
-        }
+        // Token generation using JWT
+        const token = jwt.sign({ uid: user.uid }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        res.status(200).json({ token });
     } catch (error) {
-        return res.status(400).json({ error: error.message });
+        res.status(400).json({ error: 'Invalid login credentials' });
     }
 }

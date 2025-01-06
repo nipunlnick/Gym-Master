@@ -1,4 +1,6 @@
-import { firestore } from '../firebaseConfig';
+import firebase from '../config/firebase.js';
+
+const { firestore } = firebase;
 
 export async function getClasses(req, res) {
     try {

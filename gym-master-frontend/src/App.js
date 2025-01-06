@@ -5,7 +5,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Home from './pages/Home';
 import Trainers from './pages/Trainers';
-import Members from './pages/Members';
+import Clients from './pages/Client';
 import Packages from './pages/Packages';
 
 function App() {
@@ -17,7 +17,7 @@ function App() {
         <Route path="/auth/signup" element={<Signup />} />
         <Route path="/home" element={<Home />} />
         <Route path="/trainers" element={<Trainers />} />
-        <Route path="/clients" element={<Members />} />
+        <Route path="/clients" element={<Clients />} />
         <Route path="/packages" element={<Packages />} />
 
         {/* 

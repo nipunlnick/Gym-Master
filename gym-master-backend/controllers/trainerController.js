@@ -1,4 +1,6 @@
-import { firestore } from '../firebaseConfig';
+import firebase from '../config/firebase.js';
+
+const { firestore } = firebase;
 
 export async function getTrainers(req, res) {
     try {
@@ -25,3 +27,26 @@ export async function createTrainer(req, res) {
         return res.status(400).json({ error: error.message });
     }
 }
+
+export async function assignSchedule(req, res) {
+    const { trainerId, classes } = req.body;  // List of class IDs
+    try {
+        await firestore.collection('trainers').doc(trainerId).update({ classes });
+        res.status(200).json({ message: 'Schedule assigned' });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+export async function getTrainerSchedule(req, res) {
+    const { trainerId } = req.params;
+    try {
+        const trainer = await firestore.collection('trainers').doc(trainerId).get();
+        if (!trainer.exists) return res.status(404).json({ message: 'Trainer not found' });
+
+        const schedule = trainer.data().classes || [];
+        res.status(200).json({ schedule });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};

@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { getPlans, createPlan } from '../controllers/planController';
-import { verifyToken } from '../middleware/authMiddleware';
+import { getPlans, createPlan } from '../controllers/planController.js';
+import { verifyToken } from '../middlewares/authMiddleware.js';
 const router = Router();
 
 router.get('/', getPlans);
