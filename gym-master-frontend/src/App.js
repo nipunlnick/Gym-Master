@@ -5,7 +5,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Home from './pages/Home';
 import Trainers from './pages/Trainers';
-import Clients from './pages/Client';
+import Clients from './pages/Clients';
 import Packages from './pages/Packages';
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Welcome />} />
-        <Route path="/auth/signup" element={<Login />} />
+        <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/signup" element={<Signup />} />
         <Route path="/home" element={<Home />} />
         <Route path="/trainers" element={<Trainers />} />
@@ -22,7 +22,6 @@ function App() {
 
         {/* 
         <Route path="/packages/:id" element={<Package />} />
-        
         <Route path="/clients/:id" element={<Client />} />
         <Route path="/trainers/:id" element={<Trainer />} /> */}
       </Routes>

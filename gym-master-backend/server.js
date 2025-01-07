@@ -1,4 +1,3 @@
-// Importing dependencies
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -24,13 +23,13 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Routes
-app.use('/auth', authRoutes);         // Authentication routes
-app.use('/classes', classRoutes);  // Class management routes
-app.use('/clients', clientRoutes);    // Client management routes
-app.use('/packages', packageRoutes);  // Package creation and management
-app.use('/plans', planRoutes);      // Plan management routes
-app.use('/stats', statsRoutes);       // Stats routes (dashboard)
-app.use('/trainers', trainerRoutes);  // Trainer management
+app.use('/auth', authRoutes);         // Authentication
+app.use('/', classRoutes);  // Class management
+app.use('/', clientRoutes);    // Client management
+app.use('/', packageRoutes);  // Package creation and management
+app.use('/', planRoutes);      // Plan management
+app.use('/', statsRoutes);       // Stats routes (dashboard)
+app.use('/', trainerRoutes);  // Trainer management
 
 // Base route to ensure server is running
 app.get('/', (req, res) => {

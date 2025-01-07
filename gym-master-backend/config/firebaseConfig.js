@@ -9,7 +9,8 @@ const serviceAccount = require('./firebaseAdminConfig.json');
 if (!admin.apps.length) {
     admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
-        databaseURL: "https://gym-master-ff735.firebaseio.com",  // Ensure this is your actual database URL
+        //databaseURL: "https://gym-master-ff735.firebaseio.com",  // Ensure this is your actual database URL
+        databaseURL: "https://gym-master-65885.firebaseio.com",
     });
 }
 
