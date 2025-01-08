@@ -59,8 +59,8 @@ const CreateTrainer = ({ trainerDetails, isEditMode, onClose, onCreate }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!name || !contactInfo || !selectedClass) {
-            setError('Name, Contact Info, and Class are required!');
+        if (!name || !contactInfo) {
+            setError('Name, Contact Info are required!');
             return;
         }
 

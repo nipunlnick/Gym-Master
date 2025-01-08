@@ -55,7 +55,7 @@ const CreateClass = ({ classDetails, isEditMode, onClose, onCreate }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!name || !day || !startTime || !endTime || !selectedTrainer) {
+        if (!name || !day || !startTime || !endTime) {
             setError('Name, Day, Start Time, End Time, and Trainer are required!');
             return;
         }
