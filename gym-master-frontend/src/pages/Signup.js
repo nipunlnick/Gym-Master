@@ -31,8 +31,6 @@ const Signup = () => {
 
             setSuccess('User registered successfully!');
             setError('');
-
-            // Redirect to login page after successful signup
             navigate('/auth/login');
         } catch (error) {
             setError(error.response?.data?.error || 'An error occurred during signup.');
@@ -40,74 +38,86 @@ const Signup = () => {
     };
 
     return (
-        <div className="flex justify-center items-center h-screen bg-gray-100">
-            <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
-                <h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
-                {error && <p className="text-red-500 mb-4">{error}</p>}
-                {success && <p className="text-green-500 mb-4">{success}</p>}
-                <form onSubmit={handleSignup}>
-                    <div className="mb-4">
+        <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600">
+            <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full">
+                <h2 className="text-3xl font-semibold mb-6 text-center text-gray-800">Create an Account</h2>
+                {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
+                {success && <p className="text-green-500 mb-4 text-center">{success}</p>}
+
+                <form onSubmit={handleSignup} className="space-y-4">
+                    <div>
                         <label className="block text-gray-700">Name</label>
                         <input
                             type="text"
-                            placeholder="Name"
+                            placeholder="Enter your name"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded mt-2"
+                            className="w-full p-3 border border-gray-300 rounded-lg mt-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                             required
                         />
                     </div>
-                    <div className="mb-4">
+                    <div>
                         <label className="block text-gray-700">Email</label>
                         <input
                             type="email"
-                            placeholder="Email"
+                            placeholder="Enter your email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded mt-2"
+                            className="w-full p-3 border border-gray-300 rounded-lg mt-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                             required
                         />
                     </div>
-                    <div className="mb-4">
+                    <div>
                         <label className="block text-gray-700">Password</label>
                         <input
                             type="password"
-                            placeholder="Password"
+                            placeholder="Enter your password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded mt-2"
+                            className="w-full p-3 border border-gray-300 rounded-lg mt-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                             required
                         />
                     </div>
-                    <div className="mb-4">
+                    <div>
                         <label className="block text-gray-700">Confirm Password</label>
                         <input
                             type="password"
-                            placeholder="Confirm Password"
+                            placeholder="Confirm your password"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded mt-2"
+                            className="w-full p-3 border border-gray-300 rounded-lg mt-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                             required
                         />
                     </div>
-                    <div className="mb-4">
+                    <div>
                         <label className="block text-gray-700">Role</label>
                         <select
                             value={role}
                             onChange={(e) => setRole(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded mt-2"
-                        ><option value="member">Member</option>
+                            className="w-full p-3 border border-gray-300 rounded-lg mt-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        >
+                            <option value="member">Member</option>
                             <option value="trainer">Trainer</option>
                             <option value="admin">Admin</option>
                         </select>
                     </div>
+
                     <button
                         type="submit"
-                        className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition duration-300"
+                        className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 shadow-md mt-6"
                     >
-                        Signup
+                        Sign Up
                     </button>
                 </form>
+
+                <div className="mt-6 text-center">
+                    <p className="text-sm text-gray-600">
+                        Already have an account?{' '}
+                        <a href="/auth/login" className="text-blue-600 hover:text-blue-700">
+                            Login here
+                        </a>
+                    </p>
+                </div>
             </div>
         </div>
     );

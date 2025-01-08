@@ -6,7 +6,7 @@ const router = Router();
 router.post('/trainers', verifyToken, createTrainer);  // Create member
 router.get('/trainers', getTrainers);  // Get all members
 
-router.get('/trainers/:id', verifyToken, getTrainerById);  // Get package by ID
+router.get('/trainers/:id', getTrainerById);  // Get package by ID
 router.put('/trainers/:id', verifyToken, updateTrainer);  // Update member
 router.delete('/trainers/:id', verifyToken, deleteTrainer);  // Delete member
 

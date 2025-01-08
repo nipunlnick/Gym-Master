@@ -11,7 +11,6 @@ import authRoutes from './routes/authRoutes.js';
 import classRoutes from './routes/classRoutes.js';
 import clientRoutes from './routes/clientRoutes.js';
 import packageRoutes from './routes/packageRoutes.js';
-import planRoutes from './routes/planRoutes.js';
 import statsRoutes from './routes/statsRoutes.js';
 import trainerRoutes from './routes/trainerRoutes.js';
 
@@ -26,8 +25,7 @@ app.use(cors());
 app.use('/auth', authRoutes);         // Authentication
 app.use('/', classRoutes);  // Class management
 app.use('/', clientRoutes);    // Client management
-app.use('/', packageRoutes);  // Package creation and management
-app.use('/', planRoutes);      // Plan management
+app.use('/', packageRoutes);  // Package management
 app.use('/', statsRoutes);       // Stats routes (dashboard)
 app.use('/', trainerRoutes);  // Trainer management
 

@@ -6,7 +6,7 @@ const router = Router();
 router.post('/clients', verifyToken, createClient);  // Create member
 router.get('/clients', getClients);  // Get all members
 
-router.get('/clients/:id', verifyToken, getClientById);  // Get package by ID
+router.get('/clients/:id', getClientById);  // Get package by ID
 router.put('/clients/:id', verifyToken, updateClient);  // Update member
 router.delete('/clients/:id', verifyToken, deleteClient);  // Delete member
 

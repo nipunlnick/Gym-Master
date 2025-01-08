@@ -35,9 +35,9 @@ export async function getClientById(req, res) {
         if (!clientRef.exists) {
             return res.status(404).json({ error: 'Client not found' });
         }
-        res.status(200).json({ id: clientRef.id, ...clientRef.data() });
+        return res.status(200).json({ id: clientRef.id, ...clientRef.data() });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message });
     }
 }
 

@@ -20,7 +20,7 @@ const CreatePackage = ({ packageDetails, isEditMode, onClose, onCreate }) => {
                     // Send PUT request to update package
                     const response = await axios.get(`http://localhost:5000/packages/${packageDetails}`, {
                         headers: {
-                            Authorization: `Bearer ${idToken}`, // Replace with your actual token
+                            Authorization: `Bearer ${idToken}`,
                         },
                     });
 

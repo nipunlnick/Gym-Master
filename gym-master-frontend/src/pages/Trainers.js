@@ -86,7 +86,7 @@ const Trainers = () => {
                     trainerDetails={editTrainerDetails}
                 />}
                 <div>
-                    {
+                    {filteredTrainers.length > 0 ? (
                         filteredTrainers.map(trainer => (
                             <TrainerCard
                                 key={trainer.id}
@@ -99,7 +99,9 @@ const Trainers = () => {
                                 onDelete={handleDelete}
                             />
                         ))
-                    }
+                    ) : (
+                        <div>No trainers available</div>
+                    )}
                 </div>
             </div>
         </div >

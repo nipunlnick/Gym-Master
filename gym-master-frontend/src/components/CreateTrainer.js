@@ -4,10 +4,25 @@ import axios from 'axios';
 const CreateTrainer = ({ trainerDetails, isEditMode, onClose, onCreate }) => {
     const [name, setName] = useState('');
     const [specialty, setSpecialty] = useState('');
-    const [assignedClasses, setAssignedClasses] = useState('');
+    const [availableClasses, setAvailableClasses] = useState([]);
+    const [selectedClass, setSelectedClass] = useState(''); // Only storing selected class
     const [contactInfo, setContactInfo] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+
+    // Fetch available classes on component mount
+    useEffect(() => {
+        const fetchClasses = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/classes');
+                setAvailableClasses(response.data); // Assuming 'data' is the array of classes
+            } catch (error) {
+                console.error('Error fetching classes:', error);
+                setAvailableClasses([]);
+            }
+        };
+        fetchClasses();
+    }, []);
 
     // When in edit mode, populate the form with the existing trainer details
     useEffect(() => {
@@ -17,22 +32,22 @@ const CreateTrainer = ({ trainerDetails, isEditMode, onClose, onCreate }) => {
                     // Retrieve the idToken from localStorage
                     const idToken = localStorage.getItem('idToken');
 
-                    // Send PUT request to update trainer
+                    // Send GET request to fetch trainer details
                     const response = await axios.get(`http://localhost:5000/trainers/${trainerDetails}`, {
                         headers: {
-                            Authorization: `Bearer ${idToken}`, // Replace with your actual token
+                            Authorization: `Bearer ${idToken}`,
                         },
                     });
 
-                    const newTrainerData = response.data;
+                    const trainerData = response.data;
 
-                    // Populate the form with the trainer details to edit
-                    setName(newTrainerData.name || '');
-                    setSpecialty(newTrainerData.specialty || '');
-                    setAssignedClasses(newTrainerData.assignedClasses || '');
-                    setContactInfo(newTrainerData.contactInfo || '');
+                    // Populate form fields
+                    setName(trainerData.name || '');
+                    setSpecialty(trainerData.specialty || '');
+                    setSelectedClass(trainerData.assignedClasses ? trainerData.assignedClasses[0] : ''); // Assuming a single class
+                    setContactInfo(trainerData.contactInfo || '');
                 } catch (error) {
-                    console.error('Error fetching trainers:', error);
+                    console.error('Error fetching trainer details:', error);
                 }
             }
         };
@@ -40,12 +55,12 @@ const CreateTrainer = ({ trainerDetails, isEditMode, onClose, onCreate }) => {
         fetchTrainersDetails();
     }, [isEditMode, trainerDetails]);
 
-    // Validate and create new trainer
+    // Validate and create/update trainer
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!name || !contactInfo) {
-            setError('Name and Contact Info are required!');
+        if (!name || !contactInfo || !selectedClass) {
+            setError('Name, Contact Info, and Class are required!');
             return;
         }
 
@@ -53,7 +68,7 @@ const CreateTrainer = ({ trainerDetails, isEditMode, onClose, onCreate }) => {
             const trainerData = {
                 name,
                 specialty,
-                assignedClasses,
+                assignedClasses: [selectedClass], // Wrap in array to maintain compatibility
                 contactInfo,
             };
 
@@ -61,18 +76,18 @@ const CreateTrainer = ({ trainerDetails, isEditMode, onClose, onCreate }) => {
             const idToken = localStorage.getItem('idToken');
 
             if (isEditMode && trainerDetails) {
-                // Send PUT request to update trainer
+                // Update trainer (PUT)
                 await axios.put(`http://localhost:5000/trainers/${trainerDetails}`, trainerData, {
                     headers: {
-                        Authorization: `Bearer ${idToken}`, // Replace with your actual token
+                        Authorization: `Bearer ${idToken}`,
                     },
                 });
                 setSuccess('Trainer updated successfully!');
             } else {
-                // Send POST request to create new trainers
+                // Create new trainer (POST)
                 await axios.post('http://localhost:5000/trainers', trainerData, {
                     headers: {
-                        Authorization: `Bearer ${idToken}`, // Replace with your actual token
+                        Authorization: `Bearer ${idToken}`,
                     },
                 });
                 setSuccess('Trainer created successfully!');
@@ -82,7 +97,7 @@ const CreateTrainer = ({ trainerDetails, isEditMode, onClose, onCreate }) => {
             setError('');
             setName('');
             setSpecialty('');
-            setAssignedClasses('');
+            setSelectedClass('');
             setContactInfo('');
             onCreate();
             onClose();
@@ -111,24 +126,30 @@ const CreateTrainer = ({ trainerDetails, isEditMode, onClose, onCreate }) => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-gray-700">specialty</label>
+                        <label className="block text-gray-700">Specialty</label>
                         <input
-                            type='text'
-                            placeholder='specialty'
+                            type="text"
+                            placeholder="Specialty"
                             value={specialty || ''}
                             onChange={(e) => setSpecialty(e.target.value)}
                             className="w-full p-2 border border-gray-300 rounded-lg mt-2"
-                            required
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-gray-700">Assigned Classes</label>
-                        <input
-                            type="text"
-                            value={assignedClasses || ''}
-                            onChange={(e) => setAssignedClasses(e.target.value)}
+                        <label className="block text-gray-700">Membership Plan</label>
+                        <select
+                            value={selectedClass}
+                            onChange={(e) => setSelectedClass(e.target.value)}
                             className="w-full p-2 border border-gray-300 rounded-lg mt-2"
-                        />
+                            required
+                        >
+                            <option value="">Select a Class</option>
+                            {availableClasses.map((cls) => (
+                                <option key={cls.id} value={cls.name}>
+                                    {cls.name} - ${cls.price}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                     <div className="mb-4">
                         <label className="block text-gray-700">Mobile Number</label>

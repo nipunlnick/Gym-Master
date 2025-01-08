@@ -20,22 +20,39 @@ export async function createPackage(req, res) {
 
 // Fetch all packages with pagination
 export async function getPackages(req, res) {
-    const pageSize = 10;  // number of packages per page
-    const page = parseInt(req.query.page) || 1;  // get page number from query parameter
-    const offset = (page - 1) * pageSize;
+    const limit = parseInt(req.query.limit) || 1;  // Get the limit from query params
+    const page = parseInt(req.query.page) || 1;    // Get the page number from query params
+    const offset = (page - 1) * limit;             // Calculate the offset
 
     try {
+        // Fetch the total number of packages to handle pagination in frontend
+        const totalSnapshot = await firestore.collection('packages').get();
+        const totalPackages = totalSnapshot.size;
+
         const packagesSnapshot = await firestore.collection('packages')
-            .orderBy('name')
-            .startAt(offset)
-            .limit(pageSize)
+            .orderBy('price', 'desc')
+            .offset(offset)
+            .limit(limit)
             .get();
 
-        const packages = packagesSnapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-        }));
-        res.status(200).json(packages);
+        const packages = await Promise.all(
+            packagesSnapshot.docs.map(async (doc) => {
+                const packageData = doc.data();
+
+                // Count members subscribed to this package
+                const memberCountSnapshot = await firestore.collection('clients')
+                    .where('package', '==', doc.id)
+                    .get();
+                const memberCount = memberCountSnapshot.size;
+
+                return {
+                    id: doc.id,
+                    ...packageData,
+                    memberCount,  // Add member count to each package
+                };
+            })
+        );
+        res.status(200).json({ packages, totalPackages });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

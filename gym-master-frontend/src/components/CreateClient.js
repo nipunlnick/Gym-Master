@@ -3,9 +3,10 @@ import axios from 'axios';
 
 const CreateClient = ({ clientDetails, isEditMode, onClose, onCreate }) => {
     const [name, setName] = useState('');
-    const [membershipPlan, setMembershipPlan] = useState('Gold');
+    const [membershipPlan, setMembershipPlan] = useState('');
     const [joinedDate, setJoinedDate] = useState('');
     const [status, setStatus] = useState('Active');
+    const [packages, setPackages] = useState([]);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
@@ -24,6 +25,19 @@ const CreateClient = ({ clientDetails, isEditMode, onClose, onCreate }) => {
             setJoinedDate(getTodayDate());
         }
     }, [isEditMode]);
+
+    // Fetch packages from the backend on component mount
+    useEffect(() => {
+        const fetchPackages = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/packages');
+                setPackages(response.data.packages);
+            } catch (error) {
+                console.error('Error fetching packages:', error);
+            }
+        };
+        fetchPackages();
+    }, []);
 
     // When in edit mode, populate the form with the existing client details
     useEffect(() => {
@@ -44,7 +58,7 @@ const CreateClient = ({ clientDetails, isEditMode, onClose, onCreate }) => {
 
                     // Populate the form with the client details to edit
                     setName(newClientData.name || '');
-                    setMembershipPlan(newClientData.membershipPlan || 'Gold');
+                    setMembershipPlan(newClientData.membershipPlan || '');
                     setJoinedDate(newClientData.joinedDate || 'getTodayDate()');
                     setStatus(newClientData.status || 'Active');
                 } catch (error) {
@@ -97,7 +111,7 @@ const CreateClient = ({ clientDetails, isEditMode, onClose, onCreate }) => {
             // Reset form state
             setError('');
             setName('');
-            setMembershipPlan('Gold');
+            setMembershipPlan(packages.length > 0 ? packages[0].name : '');
             setJoinedDate(getTodayDate());
             setStatus('Active');
             onCreate();
@@ -129,11 +143,18 @@ const CreateClient = ({ clientDetails, isEditMode, onClose, onCreate }) => {
                     <div className="mb-4">
                         <label className="block text-gray-700">MembershipPlan</label>
                         <select
-                            value={membershipPlan || 'Gold'}
+                            value={membershipPlan || packages.length > 0 ? packages[0].name : ''}
                             onChange={(e) => setMembershipPlan(e.target.value)}
                             className="w-full p-2 border border-gray-300 rounded-lg mt-2">
-                            <option value="Gold">Gold</option>
-                            <option value="Platinum">Platinum</option>
+                            {packages.length > 0 ? (
+                                packages.map((pkg) => (
+                                    <option key={pkg.id} value={pkg.name}>
+                                        {pkg.name} - ${pkg.price}
+                                    </option>
+                                ))
+                            ) : (
+                                <option value="">No Packages Available</option>
+                            )}
                         </select>
                     </div>
                     <div className="mb-4">
