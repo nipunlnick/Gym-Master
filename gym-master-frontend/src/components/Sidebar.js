@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaTachometerAlt, FaUsers, FaBox, FaChalkboardTeacher, FaSignOutAlt, FaUser } from 'react-icons/fa';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const Sidebar = () => {
     const navigate = useNavigate();
